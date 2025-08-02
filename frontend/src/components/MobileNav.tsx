@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Menu, X, Bell, Search, TrendingUp, Clock, BarChart3 } from 'lucide-react';
 
 interface MobileNavProps {

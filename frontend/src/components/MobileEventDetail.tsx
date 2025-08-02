@@ -139,7 +139,7 @@ const MobileEventDetail: React.FC<MobileEventDetailProps> = ({ event, onBack }) 
 const TimelineTab: React.FC<{ timeline: any[] }> = ({ timeline }) => {
   return (
     <div className="space-y-4">
-      {timeline.map((item, index) => (
+      {timeline.map((item) => (
         <div key={item._id} className="bg-white rounded-lg shadow-sm border p-4">
           <div className="flex items-start space-x-3">
             <div className="flex-shrink-0 mt-1">

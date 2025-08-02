@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Event, Timeline } from '../types';
+import { Event } from '../types';
 import { Clock, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import { format } from 'date-fns';
 import axios from 'axios';
