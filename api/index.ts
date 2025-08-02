@@ -161,10 +161,8 @@ const connectToMongoDB = async () => {
     await mongoose.connect(process.env.MONGODB_URI, {
       serverSelectionTimeoutMS: 3000, // 3秒连接超时
       socketTimeoutMS: 5000, // 5秒socket超时
-      bufferCommands: false,
-      bufferMaxEntries: 0,
-      maxPoolSize: 5,
-      minPoolSize: 1,
+      maxPoolSize: 5, // 最大连接池大小
+      minPoolSize: 1, // 最小连接池大小
     });
     
     console.log('MongoDB connected successfully');
