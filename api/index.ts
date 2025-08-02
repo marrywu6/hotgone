@@ -153,10 +153,17 @@ const connectToMongoDB = async () => {
     }
     
     if (!process.env.MONGODB_URI) {
-      throw new Error('MongoDB URI not configured');
+      throw new Error('MONGODB_URI environment variable not configured');
     }
 
-    console.log('Attempting MongoDB connection...');
+    // 诊断连接字符串（隐藏敏感信息）
+    const uriMasked = process.env.MONGODB_URI.replace(/mongodb\+srv:\/\/[^:]+:[^@]+@/, 'mongodb+srv://***:***@');
+    console.log('Attempting MongoDB connection to:', uriMasked);
+    
+    // 检查连接字符串格式
+    if (!process.env.MONGODB_URI.startsWith('mongodb+srv://') && !process.env.MONGODB_URI.startsWith('mongodb://')) {
+      throw new Error('Invalid MongoDB URI format. Must start with mongodb:// or mongodb+srv://');
+    }
     
     await mongoose.connect(process.env.MONGODB_URI, {
       serverSelectionTimeoutMS: 3000, // 3秒连接超时
@@ -168,7 +175,15 @@ const connectToMongoDB = async () => {
     console.log('MongoDB connected successfully');
     return mongoose.connection;
   } catch (error) {
-    console.error('MongoDB connection failed:', error.message);
+    console.error('MongoDB connection failed:');
+    console.error('- Error type:', error.constructor.name);
+    console.error('- Error message:', error.message);
+    if (error.message.includes('ENOTFOUND')) {
+      console.error('- This is a DNS resolution error. Check:');
+      console.error('  1. MONGODB_URI environment variable is correctly set');
+      console.error('  2. MongoDB Atlas cluster is running');
+      console.error('  3. Network access is allowed in Atlas');
+    }
     throw error;
   }
 };
