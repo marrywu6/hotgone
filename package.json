@@ -13,6 +13,9 @@
     "start": "cd backend && npm start",
     "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
   },
+  "dependencies": {
+    "@vercel/node": "^3.0.12"
+  },
   "devDependencies": {
     "concurrently": "^8.2.2"
   },

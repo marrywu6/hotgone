@@ -2,15 +2,10 @@
   "buildCommand": "npm run build",
   "outputDirectory": "frontend/dist",
   "installCommand": "npm run install:all",
-  "functions": {
-    "backend/src/server.ts": {
-      "runtime": "@vercel/node"
-    }
-  },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/backend/src/server.ts"
+      "destination": "/api/index.ts"
     }
   ],
   "crons": [
