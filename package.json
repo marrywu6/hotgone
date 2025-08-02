@@ -1,26 +1,26 @@
 {
   "name": "hotgone-app",
   "version": "1.0.0",
-  "description": "热点社会事件记忆网页应用",
+  "description": "热点社会事件记忆网页应用 - Cloudflare Pages版本",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "dev:backend": "cd backend && npm run dev",
+    "dev": "concurrently \"npm run dev:functions\" \"npm run dev:frontend\"",
+    "dev:functions": "wrangler pages dev frontend/dist --compatibility-date=2023-12-01 --port=8788",
     "dev:frontend": "cd frontend && npm run dev",
-    "build": "npm run build:frontend && npm run build:backend",
-    "build:frontend": "cd frontend && npm run build",
-    "build:backend": "cd backend && npm run build",
-    "start": "cd backend && npm start",
-    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
+    "build": "cd frontend && npm run build",
+    "deploy": "wrangler pages deploy frontend/dist",
+    "functions:dev": "wrangler dev --local --port=8788",
+    "db:setup": "echo 'Please run this in Neon Console: psql [YOUR_DATABASE_URL] -f database/neon-schema.sql'",
+    "install:all": "npm install && cd frontend && npm install --legacy-peer-deps"
   },
-  "dependencies": {
-    "@vercel/node": "^3.0.12",
-    "mongoose": "^7.6.3"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "wrangler": "^3.0.0",
+    "@cloudflare/workers-types": "^4.0.0",
+    "typescript": "^5.0.0"
   },
-  "keywords": ["social", "events", "crawler", "news"],
+  "keywords": ["social", "events", "cloudflare", "neon", "postgresql"],
   "author": "",
   "license": "MIT"
 }
