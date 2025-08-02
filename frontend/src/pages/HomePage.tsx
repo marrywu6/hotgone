@@ -3,6 +3,7 @@ import { Event } from '../types';
 import EventCard from '../components/EventCard';
 import { Loader2, AlertTriangle } from 'lucide-react';
 import axios from 'axios';
+import { createApiUrl } from '../config/api';
 
 const HomePage = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -15,7 +16,7 @@ const HomePage = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/events');
+      const response = await axios.get(createApiUrl('/events'));
       setEvents(response.data.events || response.data);
     } catch (err) {
       setError('获取事件列表失败');

@@ -4,6 +4,7 @@ import { Event, Timeline } from '../types';
 import { Clock, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import { format } from 'date-fns';
 import axios from 'axios';
+import { createApiUrl } from '../config/api';
 
 const EventDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,7 +20,7 @@ const EventDetail = () => {
 
   const fetchEvent = async (eventId: string) => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/events/${eventId}`);
+      const response = await axios.get(createApiUrl(`/events/${eventId}`));
       setEvent(response.data);
     } catch (err) {
       console.error('Failed to fetch event:', err);

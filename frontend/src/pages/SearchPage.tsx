@@ -3,6 +3,7 @@ import { Search } from 'lucide-react';
 import { Event } from '../types';
 import EventCard from '../components/EventCard';
 import axios from 'axios';
+import { createApiUrl } from '../config/api';
 
 const SearchPage = () => {
   const [query, setQuery] = useState('');
@@ -16,7 +17,7 @@ const SearchPage = () => {
 
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:3001/api/events/search?q=${encodeURIComponent(query)}`);
+      const response = await axios.get(createApiUrl(`/events/search?q=${encodeURIComponent(query)}`));
       setResults(response.data);
       setSearched(true);
     } catch (err) {
