@@ -1,26 +1,26 @@
-# 热点记忆 - 增强版社会事件追踪应用
+# 热点记忆 - 社会事件追踪应用 (Cloudflare Pages版)
 
-一个采用先进算法的自动化社会事件追踪系统，具备智能过滤、多源数据聚合和深度分析能力。
+一个基于现代Web技术栈的社会事件追踪系统，部署在Cloudflare Pages上，使用Neon PostgreSQL作为数据库。
 
 ## 🌟 核心特点
 
-### 🤖 智能数据采集
-- **多平台聚合**: 同时从微博热搜、百度热搜、知乎热榜、今日头条等平台获取数据
-- **智能过滤**: 基于机器学习的内容分类，自动识别社会事件并过滤无关内容
-- **去重算法**: 先进的文本相似度算法，避免重复事件记录
-- **实时更新**: 每日自动爬取和更新，保持信息时效性
+### 🤖 智能数据展示
+- **实时事件展示**: 展示重要社会事件及其发展脉络
+- **分类浏览**: 按科技、环境、经济等类别组织事件
+- **搜索功能**: 支持关键词、分类和重要性筛选
+- **时间线视图**: 清晰展示事件发展过程
 
-### 🧠 高级事件识别
-- **语义分析**: 基于关键词库和语义规则的事件识别
-- **实体提取**: 自动识别机构、地点、人物等关键实体
-- **重要性评分**: 多维度算法评估事件影响力
-- **分类标签**: 自动将事件分类到教育医疗、社会安全等类别
+### 📱 现代化界面
+- **响应式设计**: 完美适配桌面端和移动端
+- **Material风格**: 简洁美观的用户界面
+- **实时搜索**: 动态搜索建议和结果高亮
+- **无缝体验**: 快速加载和流畅交互
 
-### 📊 数据质量保证
-- **内容验证**: 多层过滤机制确保数据质量
-- **源头追溯**: 完整记录信息来源，确保可信度
-- **时间线重建**: 智能构建事件发展脉络
-- **趋势分析**: 动态调整事件重要性和状态
+### ⚡ 高性能架构
+- **边缘计算**: 基于Cloudflare Pages的全球CDN
+- **Serverless Functions**: 无服务器API接口
+- **现代数据库**: Neon PostgreSQL提供高可用性
+- **静态优化**: 构建时优化的前端资源
 
 ## 🚀 技术架构
 
@@ -29,20 +29,19 @@
 - **Tailwind CSS** - 美观响应式设计  
 - **React Router** - 单页应用路由
 - **Axios** - HTTP请求处理
-- **Date-fns** - 时间格式化
+- **Vite** - 现代构建工具
 
 ### 后端技术栈
-- **Node.js** + Express + TypeScript - 高性能API服务
-- **MongoDB** + Mongoose - 灵活的文档数据库
-- **Puppeteer** - 动态网页爬取
-- **Cheerio** - HTML解析
-- **Axios** - HTTP客户端
+- **Cloudflare Pages Functions** - Serverless API
+- **Neon PostgreSQL** - 现代化PostgreSQL数据库
+- **TypeScript** - 类型安全的开发体验
+- **SQL查询优化** - 高效的数据检索
 
-### 核心算法
-- **文本相似度算法** - Levenshtein距离计算
-- **关键词提取** - 基于实体识别和规则的提取
-- **相关性评分** - 多因子加权评分模型
-- **去重机制** - 标题匹配 + 关键词匹配 + 语义相似度
+### 部署架构
+- **Cloudflare Pages** - 静态资源托管 + Serverless Functions
+- **Neon Database** - 分布式PostgreSQL数据库
+- **GitHub集成** - 自动CI/CD部署
+- **全球CDN** - 极速访问体验
 
 ## 📁 项目结构
 
@@ -51,63 +50,62 @@ hotgone/
 ├── frontend/                 # React前端应用
 │   ├── src/
 │   │   ├── components/       # 可复用组件
+│   │   │   ├── EventCard.tsx
+│   │   │   ├── MobileEventCard.tsx
+│   │   │   ├── MobileEventDetail.tsx
+│   │   │   ├── MobileNav.tsx
+│   │   │   └── Navbar.tsx
 │   │   ├── pages/           # 页面组件
+│   │   │   ├── HomePage.tsx
+│   │   │   ├── EventDetail.tsx
+│   │   │   └── SearchPage.tsx
 │   │   ├── types/           # TypeScript类型定义
+│   │   ├── config/          # 配置文件
 │   │   └── ...
+│   ├── dist/                # 构建输出目录
 │   └── package.json
-├── backend/                  # Node.js后端服务
-│   ├── src/
-│   │   ├── models/          # 数据模型
-│   │   ├── routes/          # API路由
-│   │   ├── services/        # 业务逻辑层
-│   │   │   ├── crawler.ts   # 增强爬虫服务
-│   │   │   ├── aggregation.ts # 数据聚合服务
-│   │   │   └── updater.ts   # 事件更新服务
-│   │   ├── scripts/         # 工具脚本
-│   │   └── server.ts        # 服务入口
-│   └── package.json
-├── vercel.json              # Vercel部署配置
-└── README.md                # 项目文档
+├── functions/               # Cloudflare Pages Functions
+│   └── api/
+│       └── [[route]].ts     # API路由处理
+├── database/               # 数据库相关
+│   └── neon-schema.sql     # PostgreSQL架构文件
+├── build.sh               # 构建脚本
+├── wrangler.toml          # Cloudflare配置
+└── README.md
 ```
 
 ## 🎯 主要功能
 
-### 1. 智能事件发现
-- 自动从多个热门平台爬取数据
-- 基于150+关键词的社会事件识别
-- 实时过滤娱乐、体育、商业广告等无关内容
-- 智能评估事件社会影响力
+### 1. 事件浏览与搜索
+- 按分类浏览：科技、环境、经济、社会等
+- 实时搜索功能，支持标题和关键词匹配
+- 重要性筛选和排序
+- 响应式卡片布局
 
-### 2. 事件生命周期管理
-- **起因追踪**: 记录事件首次曝光
-- **进展更新**: 自动追踪事件发展
-- **结果归档**: 智能判断事件结束状态
-- **趋势分析**: 分析事件热度变化
+### 2. 事件详情展示
+- 完整的事件描述和背景信息
+- 详细的发展时间线
+- 相关关键词和来源链接
+- 移动端优化的阅读体验
 
-### 3. 高级搜索功能
-- 多维度搜索：标题、描述、关键词、分类
-- 智能排序：相关性 + 重要性综合评分
-- 实时搜索建议和结果高亮
-- 支持模糊匹配和语义搜索
-
-### 4. 数据可视化
-- 事件时间线可视化展示
-- 分类统计和趋势图表
-- 重要性指标和热度分析
-- 来源追溯和可信度评估
+### 3. 数据管理
+- PostgreSQL关系型数据库
+- 优化的SQL查询性能
+- 支持复杂搜索和筛选
+- 数据一致性和完整性保证
 
 ## 🛠 本地开发
 
 ### 环境要求
 - Node.js 18+
-- MongoDB (本地或Atlas)
 - 现代浏览器
+- Git
 
 ### 快速开始
 
 1. **克隆项目**
 ```bash
-git clone <repository-url>
+git clone https://github.com/marrywu6/hotgone.git
 cd hotgone
 ```
 
@@ -116,132 +114,164 @@ cd hotgone
 npm run install:all
 ```
 
-3. **配置环境**
+3. **启动开发环境**
 ```bash
-cp backend/.env.example backend/.env
-# 编辑 .env 文件，配置 MongoDB 连接
+# 启动前端开发服务器
+cd frontend
+npm run dev
+
+# 前端: http://localhost:5173
 ```
 
-4. **启动开发环境**
+### 构建项目
 ```bash
-npm run dev  # 同时启动前端和后端
-```
+# 构建前端静态资源
+npm run build
 
-5. **访问应用**
-- 前端: http://localhost:5173
-- 后端API: http://localhost:3001
-
-### 手动运行爬虫测试
-```bash
-cd backend
-npm run crawler
+# 或者使用构建脚本
+bash build.sh
 ```
 
 ## 🚀 部署指南
 
-### Vercel部署
-1. 推送代码到GitHub
-2. 在Vercel导入项目
-3. 配置环境变量：
-   - `MONGODB_URI`: MongoDB连接字符串
-4. 自动部署完成
+### Cloudflare Pages部署
 
-### 环境变量配置
-```env
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/hotgone
-PORT=3001
-NODE_ENV=production
-```
+1. **GitHub集成**
+   - 推送代码到GitHub仓库
+   - 连接Cloudflare Pages到GitHub
+
+2. **构建配置**
+   - Build command: `npm run build`
+   - Build output directory: `frontend/dist`
+   - Root directory: `/`
+
+3. **环境变量配置**
+   ```env
+   DATABASE_URL=your_neon_database_url
+   NODE_ENV=production
+   ```
+
+### 数据库设置 (Neon PostgreSQL)
+
+1. **创建Neon数据库**
+   - 访问 [neon.tech](https://neon.tech)
+   - 创建新项目和数据库
+
+2. **初始化数据库架构**
+   ```bash
+   # 在Neon SQL编辑器中运行
+   psql your_database_url -f database/neon-schema.sql
+   ```
+
+3. **配置连接**
+   - 复制数据库连接字符串
+   - 在Cloudflare Pages中设置环境变量
 
 ## 📖 API文档
 
 ### 事件相关接口
 ```bash
-GET /api/events                    # 获取事件列表
-GET /api/events/:id                # 获取事件详情  
-GET /api/events/search?q=keyword   # 搜索事件
-POST /api/events                   # 创建事件
-PUT /api/events/:id                # 更新事件
-POST /api/events/:id/timeline      # 添加时间线
+GET /api/events                # 获取事件列表
+GET /api/events/:id            # 获取事件详情  
+GET /api/events/search?q=keyword&category=科技&importance=9
 ```
 
-### 系统接口
-```bash
-GET /api/health                    # 健康检查
-GET /api/cron/crawl               # 手动触发爬虫
-```
+### 查询参数
+- `q`: 搜索关键词
+- `category`: 事件分类
+- `importance`: 重要性级别 (1-10)
+- `limit`: 返回数量限制
+- `offset`: 分页偏移量
 
-## 🔍 数据来源
+## 🗄 数据库架构
 
-### 主要平台
-- **微博热搜**: 实时社会热点
-- **百度热搜**: 综合搜索热点
-- **知乎热榜**: 深度讨论话题
-- **今日头条**: 新闻资讯
-- **第三方新闻API**: 权威媒体报道
+### 核心表结构
 
-### 数据处理流程
-1. **数据采集**: 并行爬取多个平台
-2. **内容过滤**: 基于关键词和规则过滤
-3. **质量评估**: 多维度评分排序
-4. **去重合并**: 智能识别相似内容
-5. **分类标记**: 自动分类和标签
-6. **存储更新**: 入库并更新时间线
+**events 表**
+- `id`: 主键
+- `title`: 事件标题
+- `description`: 事件描述
+- `category`: 事件分类
+- `importance`: 重要性级别 (1-10)
+- `keywords`: 关键词数组
+- `sources`: 信息源链接数组
+- `created_at`, `updated_at`: 时间戳
 
-## 🧪 测试示例
+**event_timeline 表**
+- `id`: 主键
+- `event_id`: 关联事件ID
+- `date`: 发生日期
+- `title`: 时间线标题
+- `content`: 详细内容
+- `type`: 事件类型
 
-### 搜索功能测试
-```bash
-curl "http://localhost:3001/api/events/search?q=协和"
-curl "http://localhost:3001/api/events/search?q=地铁"
-curl "http://localhost:3001/api/events/search?q=教育"
-```
-
-### 事件数据示例
-项目内置高质量示例数据：
-- 协和医院4+4医学教育改革争议
-- 成都地铁偷拍事件
-- 武汉大学杨景媛事件
+### 示例数据
+项目包含丰富的示例数据：
+- 2024年人工智能技术突破
+- 全球气候变化加剧
+- 全球经济复苏与挑战
+- 太空探索新进展
+- 新能源汽车市场爆发
 
 ## ⚡ 性能优化
 
-- **并行爬取**: 多数据源同时获取，提升效率
-- **智能缓存**: 减少重复请求
-- **数据压缩**: 优化传输和存储
-- **索引优化**: MongoDB全文搜索索引
-- **错误重试**: 容错机制保证稳定性
+- **CDN加速**: Cloudflare全球边缘节点
+- **静态资源优化**: Vite构建优化
+- **数据库索引**: PostgreSQL查询优化
+- **缓存策略**: 浏览器和CDN缓存
+- **懒加载**: 组件和图片按需加载
 
 ## 🔒 安全特性
 
-- **数据验证**: 严格的输入验证和过滤
-- **访问控制**: API限流和身份验证
-- **隐私保护**: 敏感信息脱敏处理
-- **日志审计**: 完整的操作日志记录
+- **输入验证**: 严格的数据验证和过滤
+- **SQL注入防护**: 参数化查询
+- **XSS防护**: 内容转义和CSP策略
+- **HTTPS强制**: 全站SSL加密
+- **访问控制**: Cloudflare安全规则
 
-## 📈 监控统计
+## 📱 移动端适配
 
-- **爬取效率**: 数据获取成功率统计
-- **事件质量**: 识别准确率分析
-- **用户行为**: 搜索和访问模式
-- **系统性能**: 响应时间和资源使用
+- **响应式布局**: 自适应各种屏幕尺寸
+- **触摸优化**: 移动端交互优化
+- **性能调优**: 移动端加载速度优化
+- **PWA支持**: 渐进式Web应用特性
+
+## 🔧 开发工具
+
+- **TypeScript**: 类型安全开发
+- **ESLint**: 代码质量检查
+- **Prettier**: 代码格式化
+- **Vite**: 快速构建和热重载
+- **Git Hooks**: 自动化代码检查
 
 ## 🤝 贡献指南
 
 1. Fork项目
-2. 创建特性分支
-3. 提交更改
-4. 发起Pull Request
+2. 创建特性分支 (`git checkout -b feature/amazing-feature`)
+3. 提交更改 (`git commit -m 'Add amazing feature'`)
+4. 推送到分支 (`git push origin feature/amazing-feature`)
+5. 发起Pull Request
 
 ## 📄 许可证
 
-MIT License
+MIT License - 详见 [LICENSE](LICENSE) 文件
 
-## 🔮 未来规划
+## 🔮 技术亮点
 
-- [ ] 接入更多数据源
-- [ ] 增加情感分析功能
-- [ ] 实现事件关联性分析
-- [ ] 开发移动端应用
-- [ ] 添加用户订阅功能
-- [ ] 集成AI内容生成"# hotgone" 
-"# hotgone" 
+- ✅ **现代化架构**: Cloudflare Pages + Neon PostgreSQL
+- ✅ **全栈TypeScript**: 类型安全的开发体验
+- ✅ **Serverless**: 无服务器架构，自动扩展
+- ✅ **全球CDN**: 极速访问体验
+- ✅ **CI/CD**: GitHub集成自动部署
+- ✅ **响应式设计**: 完美的移动端体验
+
+## 🌐 在线访问
+
+- **生产环境**: [https://hotgone.pages.dev](https://hotgone.pages.dev)
+- **预览环境**: [https://preview.hotgone.pages.dev](https://preview.hotgone.pages.dev)
+
+---
+
+**构建状态**: [![Cloudflare Pages](https://img.shields.io/badge/Cloudflare-Pages-orange)](https://pages.cloudflare.com)
+**数据库**: [![Neon](https://img.shields.io/badge/Neon-PostgreSQL-green)](https://neon.tech)
+**框架**: [![React](https://img.shields.io/badge/React-18-blue)](https://reactjs.org) 
