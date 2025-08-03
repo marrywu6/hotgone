@@ -4,7 +4,7 @@ compatibility_date = "2023-12-01"
 compatibility_flags = ["nodejs_compat"]
 
 [build]
-command = "cd frontend && npm run build"
+command = "cd frontend && npm install --legacy-peer-deps && npm run build"
 cwd = "."
 watch_dir = "frontend/src"
 
