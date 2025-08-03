@@ -14,7 +14,8 @@
       "Bash(git add:*)",
       "Bash(find:*)",
       "Bash(npm run build:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(bash:*)"
     ],
     "deny": []
   }
