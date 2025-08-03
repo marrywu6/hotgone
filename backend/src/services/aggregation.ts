@@ -64,17 +64,23 @@ export class DataAggregationService {
   // 微博热搜数据
   private async getWeiboHotSearch(): Promise<AggregatedData> {
     try {
-      // 模拟微博热搜API响应
+      // 更具体的热点事件模拟数据，包含你提到的事件
       const mockData = [
-        { word: "教育改革最新政策", num: 1234567 },
-        { word: "医院医疗事故调查", num: 987654 },
-        { word: "大学校园安全事件", num: 876543 },
-        { word: "地铁安全管理措施", num: 765432 }
+        { word: "武大杨景媛师生关系事件", num: 2345678 },
+        { word: "协和董某医学教育争议", num: 1987654 },
+        { word: "黄杨地铁耳环偷拍事件", num: 1765432 },
+        { word: "哈佛蒋某学术争议", num: 1543210 },
+        { word: "董宇辉东方甄选风波", num: 1432109 },
+        { word: "教育改革最新政策讨论", num: 1234567 },
+        { word: "医院医疗事故调查进展", num: 987654 },
+        { word: "大学校园安全管理措施", num: 876543 },
+        { word: "地铁公共场所安全监管", num: 765432 },
+        { word: "师德师风建设新规范", num: 654321 }
       ];
       
       const items = mockData.map(item => ({
         title: item.word,
-        description: `微博热搜话题：${item.word}`,
+        description: `微博热搜话题：${item.word}，引发${item.num}次讨论`,
         link: `https://s.weibo.com/weibo?q=${encodeURIComponent(item.word)}`,
         relevanceScore: this.calculateRelevanceScore(item.word, item.num)
       }));
@@ -236,13 +242,28 @@ export class DataAggregationService {
     let score = 0;
     const lowerText = text.toLowerCase();
     
-    // 基于关键词的相关性
-    const socialKeywords = [
-      '协和', '医学院', '教育改革', '偷拍', '地铁', '安全',
-      '武汉大学', '杨景媛', '师生关系', '校园', '医院',
-      '事件', '案件', '调查', '争议', '纠纷'
+    // 基于具体热点事件的高权重关键词
+    const hotEventKeywords = [
+      '武大杨景媛', '杨景媛', '协和董', '黄杨耳环', '哈佛蒋', 
+      '董宇辉', '东方甄选', '俞敏洪'
     ];
     
+    // 基于通用社会事件关键词的相关性
+    const socialKeywords = [
+      '协和', '医学院', '教育改革', '偷拍', '地铁', '安全',
+      '武汉大学', '师生关系', '校园', '医院',
+      '事件', '案件', '调查', '争议', '纠纷', '风波',
+      '师德师风', '学术诚信', '隐私保护', '公共安全'
+    ];
+    
+    // 热点事件关键词给予更高分数
+    hotEventKeywords.forEach(keyword => {
+      if (lowerText.includes(keyword)) {
+        score += 25; // 高权重
+      }
+    });
+    
+    // 通用社会关键词
     socialKeywords.forEach(keyword => {
       if (lowerText.includes(keyword)) {
         score += 10;
@@ -251,7 +272,8 @@ export class DataAggregationService {
     
     // 基于热度的相关性
     if (hotness) {
-      if (hotness > 1000000) score += 20;
+      if (hotness > 2000000) score += 25;
+      else if (hotness > 1000000) score += 20;
       else if (hotness > 500000) score += 15;
       else if (hotness > 100000) score += 10;
       else if (hotness > 50000) score += 5;
@@ -259,6 +281,7 @@ export class DataAggregationService {
     
     // 基于文本质量的相关性
     if (text.length > 10 && text.length < 200) score += 5;
+    if (text.includes('最新') || text.includes('进展') || text.includes('回应')) score += 5;
     
     return Math.min(score, 100);
   }

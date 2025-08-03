@@ -2,6 +2,7 @@ import puppeteer from 'puppeteer';
 import * as cheerio from 'cheerio';
 import axios from 'axios';
 import { Event } from '../models/Event';
+import { EventTimelineService } from './eventTimeline';
 
 interface CrawlSource {
   name: string;
@@ -250,33 +251,44 @@ function filterSocialEvents(items: CrawlItem[]): CrawlItem[] {
 
 function checkSocialKeywords(text: string): boolean {
   const socialKeywords = [
+    // 具体热点人物和事件
+    '黄杨', '耳环', '哈佛蒋', '协和董', '武大杨景媛', '杨景媛',
+    '董宇辉', '东方甄选', '俞敏洪', '新东方',
+    
     // 教育相关
     '协和', '医学院', '教育改革', '学生', '师生', '校园',
     '大学', '高校', '教师', '学校', '考试', '招生',
+    '清华', '北大', '复旦', '交大', '中科大', '浙大',
     
     // 社会事件
     '事件', '案件', '调查', '处理', '回应', '声明', '澄清',
-    '道歉', '处罚', '判决', '起诉', '举报', '曝光',
+    '道歉', '处罚', '判决', '起诉', '举报', '曝光', '爆料',
+    '舆论', '争议', '风波', '危机', '丑闻',
     
     // 安全相关  
     '偷拍', '骚扰', '性侵', '暴力', '威胁', '欺凌',
-    '安全', '隐私', '保护', '维权', '投诉',
+    '安全', '隐私', '保护', '维权', '投诉', '举报',
     
     // 医疗相关
     '医院', '医生', '患者', '医疗', '诊断', '治疗',
-    '药物', '疫苗', '手术', '急救',
+    '药物', '疫苗', '手术', '急救', '医患',
     
     // 社会问题
     '腐败', '贪污', '违法', '违规', '失职', '渎职',
-    '欺诈', '造假', '泄露', '滥用', '不当',
+    '欺诈', '造假', '泄露', '滥用', '不当', '违纪',
     
     // 公共安全
     '地铁', '公交', '交通', '火车', '飞机', '地震',
-    '火灾', '爆炸', '中毒', '事故', '灾害',
+    '火灾', '爆炸', '中毒', '事故', '灾害', '安全事故',
     
     // 社会关注
     '维权', '抗议', '示威', '罢工', '冲突', '纠纷',
-    '争议', '质疑', '批评', '抨击', '谴责'
+    '争议', '质疑', '批评', '抨击', '谴责',
+    
+    // 网络热词和社会现象
+    '社会责任', '道德底线', '公序良俗', '社会影响',
+    '公众人物', '网红', '带货', '直播', '流量',
+    '社会热点', '民生', '就业', '住房', '教育公平'
   ];
   
   return socialKeywords.some(keyword => text.includes(keyword));
@@ -342,25 +354,35 @@ function extractKeywords(title: string, description?: string): string[] {
     institutions: [
       '协和医学院', '协和医院', '北京协和', '清华大学', '北京大学',
       '武汉大学', '复旦大学', '上海交大', '中山大学', '华为',
-      '腾讯', '阿里巴巴', '百度', '字节跳动', '美团'
+      '腾讯', '阿里巴巴', '百度', '字节跳动', '美团',
+      '东方甄选', '新东方', '俞敏洪公司'
     ],
     
     // 地点实体
     locations: [
       '北京', '上海', '广州', '深圳', '杭州', '成都', '武汉',
-      '西安', '南京', '重庆', '天津', '苏州', '郑州', '长沙'
+      '西安', '南京', '重庆', '天津', '苏州', '郑州', '长沙',
+      '哈佛', '剑桥', '牛津', '麻省理工'
     ],
     
     // 事件类型
     eventTypes: [
       '医疗事故', '教育改革', '学术造假', '性骚扰', '偷拍事件',
-      '校园霸凌', '医患纠纷', '食品安全', '环境污染', '安全事故'
+      '校园霸凌', '医患纠纷', '食品安全', '环境污染', '安全事故',
+      '师生关系事件', '耳环事件', '直播风波', '商业纠纷'
     ],
     
     // 关键人物类型
     roles: [
       '教授', '医生', '学生', '患者', '校长', '院长', '董事长',
-      '总经理', '主任', '科长', '警察', '法官', '律师'
+      '总经理', '主任', '科长', '警察', '法官', '律师',
+      '主播', '网红', '公众人物', '知名人士'
+    ],
+    
+    // 热点人物关键词
+    hotPersons: [
+      '黄杨', '杨景媛', '武大杨景媛', '董宇辉', '协和董',
+      '哈佛蒋', '俞敏洪', '东方甄选主播'
     ]
   };
   
@@ -426,12 +448,17 @@ function calculateImportance(item: CrawlItem): number {
   // 基于关键词的重要性
   const highImportanceKeywords = [
     '协和', '武大', '清华', '北大', '重大事故', '重大案件',
-    '涉及', '多人', '死亡', '受伤', '失踪', '爆炸', '火灾'
+    '涉及', '多人', '死亡', '受伤', '失踪', '爆炸', '火灾',
+    // 新增热点人物和事件
+    '黄杨', '杨景媛', '董宇辉', '哈佛蒋', '协和董',
+    '东方甄选', '俞敏洪', '耳环', '师生关系',
+    '社会影响', '舆论关注', '网络热议', '公众关注'
   ];
   
   const mediumImportanceKeywords = [
     '调查', '处罚', '回应', '声明', '澄清', '道歉',
-    '学校', '医院', '警方', '官方'
+    '学校', '医院', '警方', '官方', '教育部',
+    '处理结果', '后续进展', '相关部门'
   ];
   
   highImportanceKeywords.forEach(keyword => {
@@ -499,6 +526,15 @@ async function processEvent(item: CrawlItem): Promise<void> {
       existingEvent.updatedAt = new Date();
       
       await existingEvent.save();
+      
+      // 使用事件时间线服务更新上下文
+      const timelineService = EventTimelineService.getInstance();
+      await timelineService.updateEventContext(
+        existingEvent._id.toString(), 
+        item.description || item.title, 
+        item.link
+      );
+      
       console.log(`Updated existing event: ${existingEvent.title}`);
     } else {
       // 创建新事件
@@ -521,6 +557,14 @@ async function processEvent(item: CrawlItem): Promise<void> {
       
       await newEvent.save();
       console.log(`Created new event: ${newEvent.title}`);
+      
+      // 为重要事件生成详细分析
+      if (importance > 7) {
+        const timelineService = EventTimelineService.getInstance();
+        const summary = await timelineService.generateEventSummary(newEvent._id.toString());
+        console.log(`Event summary generated for: ${newEvent.title}`);
+        console.log(summary);
+      }
     }
   } catch (error) {
     console.error('Error processing event:', error);
