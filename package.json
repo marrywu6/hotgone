@@ -7,7 +7,7 @@
     "dev": "concurrently \"npm run dev:functions\" \"npm run dev:frontend\"",
     "dev:functions": "wrangler pages dev frontend/dist --compatibility-date=2023-12-01 --port=8788",
     "dev:frontend": "cd frontend && npm run dev",
-    "build": "cd frontend && npm install --legacy-peer-deps && npm run build",
+    "build": "bash build.sh",
     "deploy": "wrangler pages deploy frontend/dist",
     "functions:dev": "wrangler dev --local --port=8788",
     "db:setup": "echo 'Please run this in Neon Console: psql [YOUR_DATABASE_URL] -f database/neon-schema.sql'",
