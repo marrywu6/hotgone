@@ -48,7 +48,7 @@ async function testDatabaseConnection() {
         date: new Date(),
         title: '测试时间线',
         content: '这是一个测试时间线项目',
-        type: 'MILESTONE'
+        type: 'INCIDENT'
       }
     });
     console.log('✅ Timeline created:', timeline.id);
