@@ -27,7 +27,9 @@
       "Bash(curl:*)",
       "Bash(npx prisma:*)",
       "Bash(taskkill /F /IM node.exe)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "Bash(./verify-deployment.sh \"https://d73eadc6.hotgone.pages.dev\")",
+      "Bash(./test-api-connection.sh:*)"
     ],
     "deny": []
   }
