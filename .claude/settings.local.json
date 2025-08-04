@@ -20,7 +20,11 @@
       "Bash(node:*)",
       "Bash(ls -la)",
       "Bash(npx prisma generate:*)",
-      "Bash(./validate-setup.sh:*)"
+      "Bash(./validate-setup.sh:*)",
+      "Bash(curl -s \"http://localhost:3001/api/health\")",
+      "Bash(pkill:*)",
+      "Bash(true)",
+      "Bash(curl:*)"
     ],
     "deny": []
   }
