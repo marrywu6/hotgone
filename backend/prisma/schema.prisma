@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  category    String
+  status      EventStatus @default(ACTIVE)
+  importance  Int      @default(1)
+  keywords    String[]
+  sources     String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  timeline    Timeline[]
+  
+  @@index([status])
+  @@index([category])
+  @@index([importance])
+  @@index([createdAt])
+  @@index([updatedAt])
+  @@map("events")
+}
+
+model Timeline {
+  id        String       @id @default(cuid())
+  eventId   String
+  date      DateTime
+  title     String
+  content   String
+  source    String?
+  type      TimelineType
+  
+  event     Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  @@index([eventId])
+  @@index([date])
+  @@map("timeline")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("users")
+}
+
+enum EventStatus {
+  ACTIVE
+  RESOLVED
+  ONGOING
+}
+
+enum TimelineType {
+  INCIDENT
+  DEVELOPMENT
+  RESPONSE
+  INVESTIGATION
+  RESOLUTION
+}

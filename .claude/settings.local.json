@@ -16,7 +16,11 @@
       "Bash(npm run build:*)",
       "Bash(chmod:*)",
       "Bash(bash:*)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(node:*)",
+      "Bash(ls -la)",
+      "Bash(npx prisma generate:*)",
+      "Bash(./validate-setup.sh:*)"
     ],
     "deny": []
   }
